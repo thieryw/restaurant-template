@@ -9,21 +9,31 @@ type PropsHeroSection = {
     heroText: ReactNode;
 }
 
-export const HeroSection = forwardRef<HTMLDivElement, PropsHeroSection>((props, ref)=> {
+export const HeroSection = forwardRef<HTMLDivElement, PropsHeroSection>((props, ref) => {
 
     const { className, backgroundImageUrl, heroText } = props
     const { cx, classes } = useStyles({ backgroundImageUrl })
 
     return (
         <div ref={ref} className={cx(classes.root, className)}>
-            <AppBar/>
+            <AppBar />
 
-            <Typography
-                variant='h1'
-                className={classes.heroText}
-            >
-                {heroText}
-            </Typography>
+            {/* I have modified the component so that it may use heroText as a string of a ReactNode. */}
+            {
+                (()=>{
+                    if(typeof heroText === "string"){
+                        return <Typography
+                            variant='h1'
+                            className={classes.heroText}
+                        >
+                            {heroText}
+                        </Typography> 
+                    }
+
+                    return heroText
+                })()
+            }
+
 
         </div >
     )
@@ -42,18 +52,18 @@ const useStyles = tss
             "borderRadius": theme.spacing(2),
             "color": "#f6edde",
             "overflow": "hidden",
-            
+
             [theme.breakpoints.only('desktop')]: {
                 "padding": "30px 50px 30px 50px",
             },
 
             [theme.breakpoints.down("desktop")]: {
-               "padding": "30px 0 30px 0",
-               "alignItems": "center",
+                "padding": "30px 0 30px 0",
+                "alignItems": "center",
             },
         },
         "heroText": {
-            
+
             [theme.breakpoints.only('tablet')]: {
                 "textAlign": "center",
             },
